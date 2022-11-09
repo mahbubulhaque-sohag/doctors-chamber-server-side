@@ -38,7 +38,7 @@ async function run(){
         })
 
         //  get limit services api
-        app.get('/services/3', async(req, res)=>{
+        app.get('/servicesThree', async(req, res)=>{
             const query = {};
             const cursor = serviceCollection.find(query).limit(3);
             const services = await cursor.toArray();
@@ -82,9 +82,9 @@ async function run(){
         // delete review api with id
         app.delete('/review/:id', async(req, res)=>{
             const id = req.params.id;
-            console.log(id)
             const query = {_id: ObjectId(id)};
             const reviews = reviewCollection.deleteOne(query);
+            console.log(reviews)
           
             res.send(reviews)
         })
