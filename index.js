@@ -11,9 +11,9 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json())
 
-const uri = 'mongodb://localhost:27017';
+// const uri = 'mongodb://localhost:27017';
 
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.lezxbrx.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.lezxbrx.mongodb.net/?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
@@ -64,6 +64,16 @@ async function run(){
         app.get('/reviews/:serviceName', async(req, res)=>{
             const name = req.params.serviceName;
             const query = {serviceName: name};
+            const cursor = reviewCollection.find(query);
+            const reviews = await cursor.toArray();
+            res.send(reviews)
+        })
+
+        // get reviews api by username
+        app.get('/review/:user', async(req, res)=>{
+            const user = req.params.user;
+            // console.log(user)
+            const query = {name:user};
             const cursor = reviewCollection.find(query);
             const reviews = await cursor.toArray();
             res.send(reviews)
